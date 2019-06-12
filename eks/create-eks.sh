@@ -16,6 +16,8 @@
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 region=us-east-1
+machine_type=t3.large
+node_volume_size=200
 privateNodegroup=true # set to true if you want eksctl to create the EKS worker nodes in private subnets
 
 echo Download the kubectl and heptio-authenticator-aws binaries and save to ~/bin
@@ -41,9 +43,9 @@ else
 fi
 cd ~
 if [ $region == "us-east-1" ]; then
-    eksctl create cluster ${privateOption} --ssh-access --ssh-public-key eks-c9-keypair --name eks-fabric --region $region --node-type m5.xlarge --node-volume-size 200 --kubeconfig=./kubeconfig.eks-fabric.yaml --zones=us-east-1a,us-east-1b,us-east-1d
+    eksctl create cluster ${privateOption} --ssh-access --ssh-public-key eks-c9-keypair --name eks-fabric --region $region --node-type $machine_type --node-volume-size $node_volume_size --kubeconfig=./kubeconfig.eks-fabric.yaml --zones=us-east-1a,us-east-1b,us-east-1d
 else
-    eksctl create cluster ${privateOption} --ssh-access --ssh-public-key eks-c9-keypair --name eks-fabric --region $region --node-type m5.xlarge --node-volume-size 200 --kubeconfig=./kubeconfig.eks-fabric.yaml
+    eksctl create cluster ${privateOption} --ssh-access --ssh-public-key eks-c9-keypair --name eks-fabric --region $region --node-type $machine_type --node-volume-size $node_volume_size --kubeconfig=./kubeconfig.eks-fabric.yaml
 fi
 
 echo Check whether kubectl can access your Kubernetes cluster
